@@ -5,7 +5,7 @@ const ServiceSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     desc: {
       type: String,
@@ -15,12 +15,12 @@ const ServiceSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    username: {
+    provider: {
       type: String,
       required: true,
     },
     categories: {
-      type: Array,
+      type: String,
       required: false,
     },
   },
