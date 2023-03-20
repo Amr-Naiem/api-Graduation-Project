@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const service = require("../models/Service");
+const Service = require("../models/Service");
 
 //CREATE SERVICE
-router.post("/", async (req, res) => {
+router.post("/create", async (req, res) => {
   const newService = new Service(req.body);
   try {
     const savedService = await newService.save();
@@ -44,7 +44,7 @@ router.delete("/:id", async (req, res) => {
     const service = await Service.findById(req.params.id);
     if (service.username === req.body.username) {
       try {
-        await Service.delete();
+        await service.delete();
         res.status(200).json("Service has been deleted...");
       } catch (err) {
         res.status(500).json(err);
