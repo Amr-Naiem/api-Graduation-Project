@@ -7,6 +7,7 @@ const authProviderRoute = require("./routes/authProvider");
 const userRoute = require("./routes/users");
 const providerRoute = require("./routes/providers");
 const serviceRoute = require("./routes/services");
+const requestsRoute = require("./routes/requests");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
@@ -48,6 +49,7 @@ app.use("/authProvider", authProviderRoute);
 app.use("/users", userRoute);
 app.use("/providers", providerRoute);
 app.use("/services", serviceRoute);
+app.use("/requests", requestsRoute);
 app.use("/categories", categoryRoute);
 
 app.listen("5000", () => {
