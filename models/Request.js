@@ -25,9 +25,10 @@ const Request_Description = new mongoose.Schema(
 
 const RequestSchema = new mongoose.Schema(
   {
-    Request_Acceptance: {
+    status: {
       type: String,
-      default:"waiting"
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
     },
     client_Name: {
         type: String,
