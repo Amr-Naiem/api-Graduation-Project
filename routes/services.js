@@ -6,21 +6,19 @@ const Provider = require("../models/Provider");
 //CREATE SERVICE
 router.post("/create", async (req, res) => {
   const newService = new Service(req.body);
-  //const provider = await Provider.findOne({username: req.body.provider});
-  const savedService = await newService.save();
-  res.status(200).json(savedService);
-/*
+  const provider = await Provider.findOne({username: req.body.provider});
   try {
     if(provider && (provider.username === req.body.provider))
     {
-
+      const savedService = await newService.save();
+      res.status(200).json(savedService);
     } else {
       res.status(401).json("Unauthorized access");
     }
   } catch (err) {
     res.status(500).json(err);
   }
-*/});
+});
 
 //UPDATE SERVICE
 router.put("/:id", async (req, res) => {
