@@ -2,9 +2,26 @@ const router = require("express").Router();
 const Provider = require("../models/Provider");
 const Service = require("../models/Service");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+// Middleware to verify JWT token
+const verifyToken = (req, res, next) => {
+  const token = req.header("Authorization");
+  if (!token) {
+    return res.status(401).json("Access denied!");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    res.status(400).json("Invalid token");
+  }
+};
 
 //UPDATE
-router.put("/:id", async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   if (req.body.providerId === req.params.id) {
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
@@ -28,7 +45,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
   if (req.body.providerId === req.params.id) {
     try {
       const provider = await Provider.findById(req.params.id);
@@ -48,7 +65,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //GET PROVIDER
-router.get("/:id", async (req, res) => {
+router.get("/:id", verifyToken, async (req, res) => {
   try {
     const provider = await Provider.findById(req.params.id);
     const { password, ...others } = provider._doc;
