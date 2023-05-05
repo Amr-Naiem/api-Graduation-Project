@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
 
     const token = generateToken(user);
     const { password, ...others } = user._doc;
-    res.status(200).json({ ...others, token, 'Login Success' });
+    res.status(200).json({ ...others, token});
   } catch (err) {
     res.status(500).json(err);
   }
