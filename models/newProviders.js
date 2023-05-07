@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ProviderSchema = new mongoose.Schema(
+const NewProviderSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -32,9 +32,14 @@ const ProviderSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "rejected"],
+      default: "pending",
+    },
   },
   { timestamps: true }
 );
 
 
-module.exports = mongoose.model("Provider", ProviderSchema);
+module.exports = mongoose.model("newProvider", NewProviderSchema);
