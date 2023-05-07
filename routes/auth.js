@@ -70,12 +70,24 @@ router.post('/login', async (req, res) => {
       return res.status(400).json('Wrong credentials!');
     }
 
-    const token = generateToken(user);
+    // Generate JWT token and send back to client
+    const tokenPayload = {
+      id: user._id,
+      username: user.username,
+      role: user.role, // Add user role to token payload
+    };
+    const token = generateToken(tokenPayload);
     const { password, ...others } = user._doc;
-    res.status(200).json({ ...others, token });
+    const response = {
+      ...others,
+      role: user.role, // Add user role to response object
+      token,
+    };
+    res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err);
   }
+  
 });
 
 module.exports = router;

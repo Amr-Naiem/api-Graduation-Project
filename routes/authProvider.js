@@ -5,8 +5,12 @@ const jwt = require("jsonwebtoken");
 
 // a function to generate a JWT token when a user logs in successfully:
 function generateToken(provider) {
-  const expiresIn = '365d'; // set the expiration time to 1 year
-  return jwt.sign({ _id: provider._id }, process.env.JWT_SECRET);
+  const expiresIn = '365d';
+  return jwt.sign({ 
+    _id: provider._id, 
+    username: provider.username,
+    role: provider.role // Include role in the JWT payload
+  }, process.env.JWT_SECRET);
 }
 
 //REGISTER
@@ -45,9 +49,20 @@ router.post("/login", async (req, res) => {
       return res.status(400).json("Wrong credentials!");
     }
 
-    const token = generateToken(provider);
+    // Generate JWT token and send back to client
+    const tokenPayload = {
+      id: provider._id,
+      username: provider.username,
+      role: 'provider', // Set role to 'provider'
+    };
+    const token = generateToken(tokenPayload);
     const { password, ...others } = provider._doc;
-    res.status(200).json({ provider: others, token });
+    const response = {
+      ...others,
+      role: provider.role,
+      token,
+    };
+    res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err);
   }

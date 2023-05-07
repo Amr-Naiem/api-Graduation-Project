@@ -9,6 +9,7 @@ const providerRoute = require("./routes/providers");
 const serviceRoute = require("./routes/services");
 const requestsRoute = require("./routes/requests");
 const categoryRoute = require("./routes/categories");
+//const messages = require("./routes/messages");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
@@ -16,6 +17,7 @@ const cors = require("cors");
 dotenv.config();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
+// CORS middleware
 app.use(cors({
   origin:"http://localhost:3000"
 }));
@@ -51,6 +53,7 @@ app.use("/providers", providerRoute);
 app.use("/services", serviceRoute);
 app.use("/requests", requestsRoute);
 app.use("/categories", categoryRoute);
+//app.use("/messages", messages);
 
 app.listen("5000", () => {
   console.log("Backend is running.");

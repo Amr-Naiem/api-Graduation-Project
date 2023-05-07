@@ -86,13 +86,21 @@ router.get("/", verifyToken, async (req, res) => {
 router.put("/:id/accept", verifyToken, async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
-    if (request) {
-      request.status = "accepted";
-      const updatedRequest = await request.save();
-      res.status(200).json(updatedRequest);
-    } else {
-      res.status(404).json("Request not found");
+    const provider = await Provider.findOne(request.provider);
+    if (!request) {
+      return res.status(404).json("Request not found");
+    } else if (!provider) {
+      return res.status(404).json("Provider not found");
     }
+
+    // Check if user has provider role
+    if (req.user.role !== 'provider') {
+      return res.status(401).json("Access denied! Only providers can accept requests.");
+    }
+
+    request.status = "accepted";
+    const updatedRequest = await request.save();
+    res.status(200).json(updatedRequest);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -102,13 +110,23 @@ router.put("/:id/accept", verifyToken, async (req, res) => {
 router.put("/:id/reject", verifyToken, async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
-    if (request) {
-      request.status = "rejected";
-      const updatedRequest = await request.save();
-      res.status(200).json(updatedRequest);
-    } else {
-      res.status(404).json("Request not found");
+    if (!request) {
+      return res.status(404).json("Request not found");
     }
+
+    const provider = await Provider.findOne(request.provider);
+    if (!provider) {
+      return res.status(404).json("Provider not found");
+    }
+
+    // Check if user has provider role
+    if (req.user.role !== 'provider') {
+      return res.status(401).json("Access denied! Only providers can reject requests.");
+    }
+
+    request.status = "rejected";
+    const updatedRequest = await request.save();
+    res.status(200).json(updatedRequest);
   } catch (err) {
     res.status(500).json(err);
   }
