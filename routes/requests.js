@@ -21,6 +21,23 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+//CREATE REQUESTS
+router.post("/createRequest", verifyToken, async (req, res) => {
+  console.log(req);
+    const newRequest = new Request(req.body);
+  const user = await User.findOne({username: req.body.client_Name});
+  try {
+    if(user && (user.username === req.body.client_Name))
+    {
+      const savedRequest = await newRequest.save(req.body);
+      res.status(200).json(savedRequest);
+    } else {
+      res.status(401).json("Unauthorized access");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 //DELETE REQUESTS
 router.delete("/:id", verifyToken, async (req, res) => {
@@ -40,6 +57,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 // GET ALL REQUESTS
 router.get("/", verifyToken, async (req, res) => {

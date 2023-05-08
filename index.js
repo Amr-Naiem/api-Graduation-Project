@@ -9,6 +9,7 @@ const providerRoute = require("./routes/providers");
 const serviceRoute = require("./routes/services");
 const requestsRoute = require("./routes/requests");
 const categoryRoute = require("./routes/categories");
+const paymentRoute = require("./routes/payments");
 //const messages = require("./routes/messages");
 const multer = require("multer");
 const path = require("path");
@@ -53,6 +54,7 @@ app.use("/providers", providerRoute);
 app.use("/services", serviceRoute);
 app.use("/requests", requestsRoute);
 app.use("/categories", categoryRoute);
+app.use("/payments", paymentRoute);
 //app.use("/messages", messages);
 
 app.listen("5000", () => {
