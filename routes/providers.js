@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Provider = require("../models/Provider");
+const NewProviders = require("../models/newProviders");
 const Service = require("../models/Service");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -70,6 +71,46 @@ router.get("/:id", verifyToken, async (req, res) => {
     const provider = await Provider.findById(req.params.id);
     const { password, ...others } = provider._doc;
     res.status(200).json(others);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//GET ALL NEW PROVIDERS
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const newproviders = await NewProviders.find();
+    res.status(200).json(newproviders);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// ACCEPT NEW PROVIDER
+router.put("/accept/:id", verifyToken, async (req, res) => {
+  try {
+    const newProvider = await NewProviders.findOne({ _id: req.params.id });
+    if (!newProvider) {
+      return res.status(404).json("New provider not found!");
+    }
+    newProvider.status = "accepted";
+    await newProvider.save();
+    res.status(200).json(newProvider);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// REJECT NEW PROVIDER
+router.put("/reject/:id", verifyToken, async (req, res) => {
+  try {
+    const newProvider = await NewProviders.findOne({ _id: req.params.id });
+    if (!newProvider) {
+      return res.status(404).json("New provider not found!");
+    }
+    newProvider.status = "rejected";
+    await newProvider.save();
+    res.status(200).json("New provider has been rejected...");
   } catch (err) {
     res.status(500).json(err);
   }
