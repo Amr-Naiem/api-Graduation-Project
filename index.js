@@ -6,7 +6,7 @@ const authRoute = require("./routes/auth");
 const authProviderRoute = require("./routes/authProvider");
 const userRoute = require("./routes/users");
 const providerRoute = require("./routes/providers");
-const newproviderRoute = require("./routes/newproviders");
+const newproviderRoute = require("./routes/newProviders");
 const serviceRoute = require("./routes/services");
 const requestsRoute = require("./routes/requests");
 const categoryRoute = require("./routes/categories");
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 // CORS middleware
 app.use(cors({
-  origin:"http://localhost:3000"
+  origin:["http://localhost:3000","http://localhost:3006"]
 }));
 //app.use(express.static(__dirname + "/images"));
 mongoose
