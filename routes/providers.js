@@ -76,44 +76,16 @@ router.get("/:id", verifyToken, async (req, res) => {
   }
 });
 
-//GET ALL NEW PROVIDERS
+//GET ALL PROVIDERS
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const newproviders = await NewProviders.find();
-    res.status(200).json(newproviders);
+    const providers = await Provider.find();
+    res.status(200).json(providers);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// ACCEPT NEW PROVIDER
-router.put("/accept/:id", verifyToken, async (req, res) => {
-  try {
-    const newProvider = await NewProviders.findOne({ _id: req.params.id });
-    if (!newProvider) {
-      return res.status(404).json("New provider not found!");
-    }
-    newProvider.status = "accepted";
-    await newProvider.save();
-    res.status(200).json(newProvider);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
-// REJECT NEW PROVIDER
-router.put("/reject/:id", verifyToken, async (req, res) => {
-  try {
-    const newProvider = await NewProviders.findOne({ _id: req.params.id });
-    if (!newProvider) {
-      return res.status(404).json("New provider not found!");
-    }
-    newProvider.status = "rejected";
-    await newProvider.save();
-    res.status(200).json("New provider has been rejected...");
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 module.exports = router;

@@ -69,6 +69,29 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+// GET REQUESTS BY USER ID AND SORT BY DATE
+router.get("/client/:client_Name", verifyToken, async (req, res) => {
+  try {
+    const { client_Name } = req.params;
+    console.log(client_Name)
+    const requests = await Request.find({ client_Name }).sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// GET REQUESTS BY USER ID AND SORT BY DATE
+router.get("/provider/:provider_Name", verifyToken, async (req, res) => {
+  try {
+    const { provider_Name } = req.params;
+    console.log(provider_Name)
+    const requests = await Request.find({ provider_Name }).sort({ createdAt: -1 });
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // ACCEPT REQUESTS
 router.put("/:id/accept", verifyToken, async (req, res) => {
   try {
