@@ -23,8 +23,8 @@ const verifyToken = (req, res, next) => {
 
 //CREATE REQUESTS
 router.post("/createRequest", verifyToken, async (req, res) => {
-  console.log(req);
-    const newRequest = new Request(req.body);
+   
+  const newRequest = new Request(req.body);
   const user = await User.findOne({username: req.body.client_Name});
   try {
     if(user && (user.username === req.body.client_Name))
@@ -44,7 +44,7 @@ router.delete("/:id",verifyToken, async (req, res) => {
   try {
     
     const service = await Request.findById(req.params.id);
-    console.log(service)
+    
     if (service.provider_Name === req.body.username) {
       
       await service.delete();
@@ -73,7 +73,7 @@ router.get("/", verifyToken, async (req, res) => {
 router.get("/client/:client_Name", verifyToken, async (req, res) => {
   try {
     const { client_Name } = req.params;
-    console.log(client_Name)
+    
     const requests = await Request.find({ client_Name }).sort({ createdAt: -1 });
     res.status(200).json(requests);
   } catch (err) {
@@ -84,7 +84,6 @@ router.get("/client/:client_Name", verifyToken, async (req, res) => {
 router.get("/provider/:provider_Name", verifyToken, async (req, res) => {
   try {
     const { provider_Name } = req.params;
-    console.log(provider_Name)
     const requests = await Request.find({ provider_Name }).sort({ createdAt: -1 });
     res.status(200).json(requests);
   } catch (err) {
