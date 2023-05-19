@@ -40,16 +40,16 @@ router.post("/createRequest", verifyToken, async (req, res) => {
 });
 
 //DELETE REQUESTS
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id",verifyToken, async (req, res) => {
   try {
-    const service = await Service.findById(req.params.id);
-    if (service.provider === req.body.provider) {
-      try {
-        await service.delete();
-        res.status(200).json("Service has been deleted...");
-      } catch (err) {
-        res.status(500).json(err);
-      }
+    
+    const service = await Request.findById(req.params.id);
+    console.log(service)
+    if (service.provider_Name === req.body.username) {
+      
+      await service.delete();
+      res.status(200).json("Service has been deleted...");
+      
     } else {
       res.status(401).json("You can delete only your service!");
     }
