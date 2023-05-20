@@ -1,37 +1,11 @@
 const mongoose = require("mongoose");
 
-const reviewSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  rating: {
-    type: Number,
-    required: true,
-    min: 1,
-    max: 5,
-  },
-  comment: {
-    type: String,
-    required: true,
-  },
-  timestamps: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  image: {
-    type: String,
-    required: true,
-  },
-});
 
 const ServiceSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
-      unique: false,
     },
     desc: {
       type: String,
@@ -39,7 +13,6 @@ const ServiceSchema = new mongoose.Schema(
     },
     providerImage: {
       type: String,
-      required: true,
     },
     provider: {
       type: String,
@@ -53,14 +26,11 @@ const ServiceSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    reviews: [reviewSchema],
     gallery: {
       type: [String],
-      required: true,
     },
     location: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
