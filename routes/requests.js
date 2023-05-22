@@ -141,5 +141,37 @@ router.put("/:id/reject", verifyToken, async (req, res) => {
   }
 });
 
+// TRANSFER REQUESTS
+router.put("/:id/transfer", verifyToken, async (req, res) => {
+  try {
+    const request = await Request.findById(req.params.id);
+    console.log(request)
+    const toProvider = await Provider.findOne({ username: req.body.to })
+    
+    if (!request) {
+      return res.status(400).json("Request not found");
+    } 
+    
+    if (request.provider_Name !== req.body.from){
+      return res.status(403).json("you not allowd to transfer proposal that you don't have")
+    } else if (!toProvider) {
+      return res.status(400).json(`${req.body.to} not found`)
+    }
+
+
+    if (request.status === "accepted") {
+      return res.status(400).json("This request has already been accepted.");
+    }
+
+    // Update the current request to "transferred"
+    request.provider_Name = req.body.to
+    const updatedRequest = await request.save();
+    res.status(200).json(updatedRequest);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 
 module.exports = router;

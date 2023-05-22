@@ -22,7 +22,7 @@ function verifyToken(req, res, next) {
 }
 
 //CREATE SERVICE
-router.post("/create", verifyToken, async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const provider = await Provider.findOne({username: req.body.provider});
     if(provider && (provider.username === req.body.provider))
@@ -39,7 +39,7 @@ router.post("/create", verifyToken, async (req, res) => {
 });
 
 //UPDATE SERVICE
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);
     if (service.provider === req.body.provider) {
@@ -64,7 +64,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 //DELETE SERVICE
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);
     if (service.provider === req.body.provider) {

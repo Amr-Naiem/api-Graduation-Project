@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
-  name: {
+
+  client_Name: {
     type: String,
-    required: true,
-  },
+    required: true
+    },
+  provider_Name: {
+    type: String,
+    required: true
+    },
   rating: {
     type: Number,
     required: true,
