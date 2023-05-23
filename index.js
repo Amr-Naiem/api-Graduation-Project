@@ -22,7 +22,7 @@ app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 // CORS middleware
 app.use(cors({
-  origin:["http://localhost:3000","http://localhost:3006","https://homination-provider.netlify.app"]
+  origin:["http://localhost:3000","http://localhost:3006","https://homination-provider.netlify.app","https://homination-clinet.netlify.app"]
 }));
 //app.use(express.static(__dirname + "/images"));
 mongoose
