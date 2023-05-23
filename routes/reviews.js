@@ -86,7 +86,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
 //GET REVIEW
 router.get("/:provider_Name", async (req, res) => {
   try {
-    const review = await Review.findOne({provider_Name:req.params.provider_Name});
+    const review = await Review.find({provider_Name:req.params.provider_Name});
     res.status(200).json(review);
   } catch (err) {
     res.status(500).json(err);
