@@ -8,7 +8,7 @@ const Request_Description = new mongoose.Schema(
       required: true  
     },
     request_Desc: {
-      type: String,
+      type: Object,
       required: true  
     },
     property_Type: {
