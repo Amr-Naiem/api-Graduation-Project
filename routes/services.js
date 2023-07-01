@@ -163,8 +163,9 @@ router.get("/recommended/:catName", async (req, res) => {
 
     // Sort the services by distance in ascending order (nearest first)
     servicesWithDistance.sort((a, b) => a.distance - b.distance);
+    
 
-    res.status(200).json(servicesWithDistance);
+    res.status(200).json(servicesWithDistance.slice(0, 4));
   } catch (err) {
     res.status(500).json(err);
   }

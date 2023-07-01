@@ -43,7 +43,7 @@ const ServiceSchema = new mongoose.Schema(
       },
       coordinates: {
         type: [Number],
-        default: [30, 30],
+        default: [30.005493, 31.477898],
         index: "2dsphere",
       },
     },
