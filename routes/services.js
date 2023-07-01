@@ -128,10 +128,10 @@ router.get("/", async (req, res) => {
 
 //GET RECOMMENDED SERVICES
 
-router.get("/recommended/:userid", async (req, res) => {
-  const userid = req.params.userid;
+router.get("/recommended/:catName", async (req, res) => {
+  //const userid = req.params.userid;
   const provider = req.query.provider;
-  const catName = req.query.catname;
+  const catName = req.params.catname;
   const userLatitude = parseFloat(req.query.lat); // User's current latitude
   const userLongitude = parseFloat(req.query.long); // User's current longitude
   console.log(provider);
