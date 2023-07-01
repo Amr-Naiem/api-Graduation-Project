@@ -22,7 +22,7 @@ const ServiceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subCategories: {
+    subcategories: {
       type: String,
       required: true,
     },
@@ -47,11 +47,7 @@ const ServiceSchema = new mongoose.Schema(
         index: "2dsphere",
       },
     },
-      coordinates: {
-        type: [Number],
-        index: "2dsphere",
-      },
-    },
+  },
   { timestamps: true }
 );
 

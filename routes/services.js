@@ -127,15 +127,16 @@ router.get("/", async (req, res) => {
 });
 
 //GET RECOMMENDED SERVICES
+
 router.get("/recommended/:userid", async (req, res) => {
   const userid = req.params.userid;
   const provider = req.query.provider;
   const catName = req.query.catname;
-  const userLatitude = req.query.lat; // User's current latitude
-  const userLongitude = req.query.long; // User's current longitude
-  console.log(provider)
-  console.log(catName)
-  console.log(userLatitude, userLongitude)
+  const userLatitude = parseFloat(req.query.lat); // User's current latitude
+  const userLongitude = parseFloat(req.query.long); // User's current longitude
+  console.log(provider);
+  console.log(catName);
+  console.log(userLatitude, userLongitude);
 
   try {
     let services;
@@ -150,23 +151,24 @@ router.get("/recommended/:userid", async (req, res) => {
     } else {
       services = await Service.find();
     }
-    
+
     // Calculate distances between user location and service locations
     const servicesWithDistance = services.map((service) => {
-      const distance = getDistance(
-        userLatitude,
-        userLongitude,
-        service.geolocation.coordinates[1], // Assuming longitude is stored at index 0
-        service.geolocation.coordinates[0] // Assuming latitude is stored at index 1
-        );
-        return { ...service._doc, distance };
-      });
-      
-      res.status(200).json(servicesWithDistance);
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  });
+      const distance = geolib.getDistance(
+        { latitude: userLatitude, longitude: userLongitude },
+        { latitude: service.geolocation.coordinates[1], longitude: service.geolocation.coordinates[0] }
+      );
+      return { ...service._doc, distance };
+    });
+
+    // Sort the services by distance in ascending order (nearest first)
+    servicesWithDistance.sort((a, b) => a.distance - b.distance);
+
+    res.status(200).json(servicesWithDistance);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 
   // GET FAVORITE SERVICES
