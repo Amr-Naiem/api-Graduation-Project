@@ -47,7 +47,6 @@ const ServiceSchema = new mongoose.Schema(
         index: "2dsphere",
       },
     },
-  },
   { timestamps: true }
 );
 
