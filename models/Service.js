@@ -20,7 +20,11 @@ const ServiceSchema = new mongoose.Schema(
     },
     categories: {
       type: String,
-      required: false,
+      required: true,
+    },
+    subCategories: {
+      type: String,
+      required: true,
     },
     price: {
       type: Number,
@@ -39,6 +43,7 @@ const ServiceSchema = new mongoose.Schema(
       },
       coordinates: {
         type: [Number],
+        default: [30, 30],
         index: "2dsphere",
       },
     },

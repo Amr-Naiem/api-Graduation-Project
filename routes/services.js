@@ -126,64 +126,17 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET FAVORITE SERVICES
-router.get("/:userId/favorite", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findById(userId).populate('favoriteServices');
-    const favoriteServices = user.favoriteServices;
-    res.status(200).json(favoriteServices);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-//ADD SERVICE TO FAVORITES
-router.post("/favorite/add", async (req, res) => {
-  try {
-    const user = await User.findById(req.body.userId);
-    const service = await Service.findById(req.body.serviceId);
-    if (!user || !service) {
-      res.status(404).json("User or service not found");
-    } else if (user.favoriteServices.includes(service._id)) {
-      res.status(400).json("Service already in favorites");
-    } else {
-      user.favoriteServices.push(service._id);
-      service.isFavorite = true; // Set isFavorite to true
-      await Promise.all([user.save(), service.save()]);
-      res.status(200).json("Service added to favorites");
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// REMOVE SERVICE FROM FAVORITES
-router.delete("/favorite/remove", async (req, res) => {
-  try {
-    const user = await User.findById(req.body.userId);
-    const serviceId = req.body.serviceId;
-    if (!user.favoriteServices.includes(serviceId)) {
-      res.status(400).json("Service not found in favorites");
-    } else {
-      user.favoriteServices.pull(serviceId);
-      await user.save();
-      res.status(200).json("Service removed from favorites");
-    }
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-
 //GET RECOMMENDED SERVICES
-router.get("/recommended", async (req, res) => {
+router.get("/recommended/:userid", async (req, res) => {
+  const userid = req.params.userid;
   const provider = req.query.provider;
   const catName = req.query.catname;
   const userLatitude = req.query.lat; // User's current latitude
   const userLongitude = req.query.long; // User's current longitude
-  console.log(userLatitude, userLongitude)
   console.log(provider)
+  console.log(catName)
+  console.log(userLatitude, userLongitude)
+
   try {
     let services;
     if (provider) {
@@ -197,23 +150,73 @@ router.get("/recommended", async (req, res) => {
     } else {
       services = await Service.find();
     }
-
+    
     // Calculate distances between user location and service locations
     const servicesWithDistance = services.map((service) => {
       const distance = getDistance(
         userLatitude,
         userLongitude,
-        service.location.coordinates[1], // Assuming longitude is stored at index 0
-        service.location.coordinates[0] // Assuming latitude is stored at index 1
-      );
-      return { ...service._doc, distance };
-    });
+        service.geolocation.coordinates[1], // Assuming longitude is stored at index 0
+        service.geolocation.coordinates[0] // Assuming latitude is stored at index 1
+        );
+        return { ...service._doc, distance };
+      });
+      
+      res.status(200).json(servicesWithDistance);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
 
-    res.status(200).json(servicesWithDistance);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
-
-module.exports = router;
+  // GET FAVORITE SERVICES
+  router.get("/:userId/favorite", async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const user = await User.findById(userId).populate('favoriteServices');
+      const favoriteServices = user.favoriteServices;
+      res.status(200).json(favoriteServices);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+  
+  //ADD SERVICE TO FAVORITES
+  router.post("/favorite/add", async (req, res) => {
+    try {
+      const user = await User.findById(req.body.userId);
+      const service = await Service.findById(req.body.serviceId);
+      if (!user || !service) {
+        res.status(404).json("User or service not found");
+      } else if (user.favoriteServices.includes(service._id)) {
+        res.status(400).json("Service already in favorites");
+      } else {
+        user.favoriteServices.push(service._id);
+        service.isFavorite = true; // Set isFavorite to true
+        await Promise.all([user.save(), service.save()]);
+        res.status(200).json("Service added to favorites");
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+  
+  // REMOVE SERVICE FROM FAVORITES
+  router.delete("/favorite/remove", async (req, res) => {
+    try {
+      const user = await User.findById(req.body.userId);
+      const serviceId = req.body.serviceId;
+      if (!user.favoriteServices.includes(serviceId)) {
+        res.status(400).json("Service not found in favorites");
+      } else {
+        user.favoriteServices.pull(serviceId);
+        await user.save();
+        res.status(200).json("Service removed from favorites");
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+  
+  
+  module.exports = router;
