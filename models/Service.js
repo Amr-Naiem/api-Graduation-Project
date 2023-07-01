@@ -30,6 +30,9 @@ const ServiceSchema = new mongoose.Schema(
       type: [String],
     },
     location: {
+      type: String,
+    },
+    geolocation: {
       type: {
         type: String,
         default: "Point",

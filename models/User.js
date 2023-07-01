@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    favoriteServices: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Service',
+    }],
   },
   { timestamps: true }
 );
