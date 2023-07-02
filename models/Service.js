@@ -35,6 +35,7 @@ const ServiceSchema = new mongoose.Schema(
     },
     location: {
       type: String,
+      default: ""
     },
     geolocation: {
       type: {
