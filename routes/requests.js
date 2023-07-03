@@ -69,6 +69,36 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
+// GET ALL ACCEPTED REQUESTS
+router.get("/pending", verifyToken, async (req, res) => {
+  try {
+    const requests = await Request.find({ status: "pending" });
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET ALL ACCEPTED REQUESTS
+router.get("/accepted", verifyToken, async (req, res) => {
+  try {
+    const requests = await Request.find({ status: "accepted" });
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// GET ALL REJECTED REQUESTS
+router.get("/rejected", verifyToken, async (req, res) => {
+  try {
+    const requests = await Request.find({ status: "rejected" });
+    res.status(200).json(requests);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // GET REQUESTS BY USER ID AND SORT BY DATE
 router.get("/client/:client_Name", verifyToken, async (req, res) => {
   try {
