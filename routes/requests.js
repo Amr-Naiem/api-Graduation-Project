@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
 };
 
 //CREATE REQUESTS
-router.post("/createRequest", verifyToken, async (req, res) => {
+router.post("/createRequest", async (req, res) => {
    
   const newRequest = new Request(req.body);
   const user = await User.findOne({username: req.body.client_Name});
