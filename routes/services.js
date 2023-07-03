@@ -30,10 +30,7 @@ function verifyToken(req, res, next) {
 router.post("/create", async (req, res) => {
   try {
     const provider = await Provider.findOne({username: req.body.provider});
-    const {location} = provider;
-    //console.log(provider);
-    const {body} = req;
-    body.location = location;
+
     if(provider && (provider.username === req.body.provider))
     {
       const newService = new Service(req.body);
