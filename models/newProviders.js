@@ -28,6 +28,16 @@ const NewProviderSchema = new mongoose.Schema(
       type: String,
       unique: false,
     },
+    location: {
+      type: {
+        type: String,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        index: "2dsphere",
+      },
+    },
     profilePic: {
       type: String,
       default: "",
