@@ -122,7 +122,7 @@ router.get("/provider/:provider_Name", async (req, res) => {
 });
 
 // ACCEPT REQUESTS
-router.put("/:id/accept", verifyToken, async (req, res) => {
+router.put("/:id/accept", async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     const provider = await Provider.findOne(request.provider);
@@ -146,7 +146,7 @@ router.put("/:id/accept", verifyToken, async (req, res) => {
 });
 
 // REJECT REQUESTS
-router.put("/:id/reject", verifyToken, async (req, res) => {
+router.put("/:id/reject", async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     if (!request) {
