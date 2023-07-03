@@ -22,7 +22,7 @@ const verifyToken = (req, res, next) => {
 };
 
 //GET ALL NEW PROVIDERS
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const newproviders = await NewProviders.find();
     res.status(200).json(newproviders);
@@ -32,7 +32,7 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 //Accept
-router.put("/accept/:id", verifyToken, async (req, res) => {
+router.put("/accept/:id", async (req, res) => {
     try {
       const newProvider = await NewProviders.findOne({ _id: req.params.id });
       if (!newProvider) {
@@ -66,7 +66,7 @@ router.put("/accept/:id", verifyToken, async (req, res) => {
   });
 
 // REJECT NEW PROVIDER
-router.put("/reject/:id", verifyToken, async (req, res) => {
+router.put("/reject/:id", async (req, res) => {
   try {
     const newProvider = await NewProviders.findOne({ _id: req.params.id });
     if (!newProvider) {

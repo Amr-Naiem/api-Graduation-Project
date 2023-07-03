@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
 };
 
 // CREATE REVIEW
-router.post("/create", verifyToken, async (req, res) => {
+router.post("/create", async (req, res) => {
     const newReview = new Review(req.body);
     const provider = await Provider.findOne({username:req.body.provider_Name});
     try {
@@ -40,7 +40,7 @@ router.post("/create", verifyToken, async (req, res) => {
 
 
 //UPDATE REVIEW
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const review= await Review.findById(req.params.id);
     if (review.provider === req.body.provider) {
@@ -65,7 +65,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 //DELETE REVIEW
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const review = await Review.findById(req.params.id);
     if (review.provider === req.body.provider) {

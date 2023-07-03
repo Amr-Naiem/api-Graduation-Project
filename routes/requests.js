@@ -40,7 +40,7 @@ router.post("/createRequest", async (req, res) => {
 });
 
 //DELETE REQUESTS
-router.delete("/:id",verifyToken, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     
     const service = await Request.findById(req.params.id);
@@ -60,7 +60,7 @@ router.delete("/:id",verifyToken, async (req, res) => {
 
 
 // GET ALL REQUESTS
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const requests = await Request.find();
     res.status(200).json(requests);
@@ -70,7 +70,7 @@ router.get("/", verifyToken, async (req, res) => {
 });
 
 // GET ALL ACCEPTED REQUESTS
-router.get("/pending", verifyToken, async (req, res) => {
+router.get("/pending", async (req, res) => {
   try {
     const requests = await Request.find({ status: "pending" });
     res.status(200).json(requests);
@@ -80,7 +80,7 @@ router.get("/pending", verifyToken, async (req, res) => {
 });
 
 // GET ALL ACCEPTED REQUESTS
-router.get("/accepted", verifyToken, async (req, res) => {
+router.get("/accepted", async (req, res) => {
   try {
     const requests = await Request.find({ status: "accepted" });
     res.status(200).json(requests);
@@ -90,7 +90,7 @@ router.get("/accepted", verifyToken, async (req, res) => {
 });
 
 // GET ALL REJECTED REQUESTS
-router.get("/rejected", verifyToken, async (req, res) => {
+router.get("/rejected", async (req, res) => {
   try {
     const requests = await Request.find({ status: "rejected" });
     res.status(200).json(requests);
@@ -100,7 +100,7 @@ router.get("/rejected", verifyToken, async (req, res) => {
 });
 
 // GET REQUESTS BY USER ID AND SORT BY DATE
-router.get("/client/:client_Name", verifyToken, async (req, res) => {
+router.get("/client/:client_Name", async (req, res) => {
   try {
     const { client_Name } = req.params;
     
@@ -111,7 +111,7 @@ router.get("/client/:client_Name", verifyToken, async (req, res) => {
   }
 });
 // GET REQUESTS BY USER ID AND SORT BY DATE
-router.get("/provider/:provider_Name", verifyToken, async (req, res) => {
+router.get("/provider/:provider_Name", async (req, res) => {
   try {
     const { provider_Name } = req.params;
     const requests = await Request.find({ provider_Name }).sort({ createdAt: -1 });
@@ -122,7 +122,7 @@ router.get("/provider/:provider_Name", verifyToken, async (req, res) => {
 });
 
 // ACCEPT REQUESTS
-router.put("/:id/accept", verifyToken, async (req, res) => {
+router.put("/:id/accept", async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     const provider = await Provider.findOne(request.provider);
@@ -146,7 +146,7 @@ router.put("/:id/accept", verifyToken, async (req, res) => {
 });
 
 // REJECT REQUESTS
-router.put("/:id/reject", verifyToken, async (req, res) => {
+router.put("/:id/reject", async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     if (!request) {
@@ -172,7 +172,7 @@ router.put("/:id/reject", verifyToken, async (req, res) => {
 });
 
 // TRANSFER REQUESTS
-router.put("/:id/transfer", verifyToken, async (req, res) => {
+router.put("/:id/transfer", async (req, res) => {
   try {
     const request = await Request.findById(req.params.id);
     console.log(request)

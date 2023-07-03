@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
 };
 
 //UPDATE
-router.put("/:id", verifyToken, async (req, res) => {
+router.put("/:id", async (req, res) => {
   if (req.body.userId === req.params.id) {
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
@@ -45,7 +45,7 @@ router.put("/:id", verifyToken, async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", verifyToken, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   if (req.body.userId === req.params.id) {
     try {
       const user = await User.findById(req.params.id);
@@ -65,7 +65,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
 });
 
 //GET USER
-router.get("/:id", verifyToken, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { password, ...others } = user._doc;
@@ -76,7 +76,7 @@ router.get("/:id", verifyToken, async (req, res) => {
 });
 
 //GET ALL USERS
-router.get("/", verifyToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const user = await User.find();
     res.status(200).json(user);
