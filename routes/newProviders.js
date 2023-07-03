@@ -31,7 +31,7 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-//Accept NEw
+//Accept
 router.put("/accept/:id", verifyToken, async (req, res) => {
     try {
       const newProvider = await NewProviders.findOne({ _id: req.params.id });
@@ -42,7 +42,16 @@ router.put("/accept/:id", verifyToken, async (req, res) => {
       await newProvider.save();
       
       // Create a new provider based on the new provider data
-      const provider = new Provider({...req.body, password:hashedPass,});
+      const provider = new Provider({
+        username: newProvider.username,
+        password: newProvider.password,
+        name: newProvider.name,
+        email: newProvider.email,
+        phone_number: newProvider.phone_number,
+        address: newProvider.address,
+        profilePic: newProvider.profilePic,
+        location: newProvider.location,
+      });
       
       // Save the new provider to the database
       const savedProvider = await provider.save();
