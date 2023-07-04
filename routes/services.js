@@ -109,11 +109,7 @@ router.get("/", async (req, res) => {
     if (provider) {
       services = await Service.find({ provider });
     } else if (catName) {
-      services = await Service.find({
-        categories: {
-          $in: [catName],
-        },
-      });
+      services = await Service.find({ subcategories: catName});
     } else {
       services = await Service.find();
     }
